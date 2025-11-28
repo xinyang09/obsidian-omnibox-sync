@@ -1,0 +1,81 @@
+/* Omnibox Sync Plugin Styles */
+
+/* 状态栏样式 */
+.omnibox-sync-status {
+	padding: 4px 8px;
+	border-radius: 4px;
+	font-size: 12px;
+	font-weight: 500;
+	transition: all 0.2s ease;
+}
+
+.omnibox-sync-status.syncing {
+	background-color: var(--interactive-accent);
+	color: var(--text-on-accent);
+	animation: pulse 1.5s ease-in-out infinite;
+}
+
+.omnibox-sync-status.error {
+	background-color: var(--background-modifier-error);
+	color: var(--text-error);
+}
+
+.omnibox-sync-status.success {
+	background-color: var(--background-modifier-success);
+	color: var(--text-success);
+}
+
+.omnibox-sync-status.ready {
+	background-color: var(--background-modifier-border);
+	color: var(--text-muted);
+}
+
+@keyframes pulse {
+	0%, 100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.6;
+	}
+}
+
+/* 设置页面样式 */
+.omnibox-settings-section {
+	margin-top: 20px;
+	padding-top: 20px;
+	border-top: 1px solid var(--background-modifier-border);
+}
+
+.omnibox-settings-section h3 {
+	margin-bottom: 10px;
+	color: var(--text-normal);
+	font-size: 1.1em;
+	font-weight: 600;
+}
+
+.omnibox-settings-section p {
+	margin-top: 0;
+	margin-bottom: 15px;
+	color: var(--text-muted);
+	font-size: 0.9em;
+}
+
+/* 设置项样式增强 */
+.setting-item {
+	padding: 12px 0;
+}
+
+.setting-item-info {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.setting-item-name {
+	font-weight: 500;
+}
+
+.setting-item-description {
+	color: var(--text-muted);
+	font-size: 0.9em;
+}

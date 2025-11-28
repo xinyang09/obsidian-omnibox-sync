@@ -1,0 +1,10 @@
+{
+  "id": "obsidian-omnibox-sync",
+  "name": "Omnibox Sync",
+  "version": "1.0.0",
+  "minAppVersion": "0.15.0",
+  "description": "与 Omnibox 系统双向同步笔记和文件",
+  "author": "xinyang09",
+  "authorUrl": "https://github.com/xinyang09",
+  "isDesktopOnly": false
+}
