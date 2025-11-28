@@ -274,7 +274,42 @@ class OmniboxClient {
       console.log('📥 JSON 响应状态:', jsonResponse.status);
       if (jsonResponse.status >= 200 && jsonResponse.status < 300) {
         console.log('✅ JSON 响应成功:', jsonResponse.json);
-        return jsonResponse.json;
+        const created = jsonResponse.json || {};
+        if (payload.content && created.id) {
+          const patchUrl2 = `${this.baseUrl}/api/v1/namespaces/${this.namespaceId}/resources/${created.id}`;
+          const headers2 = { 'Content-Type': 'application/json' };
+          const bearer2 = String(this.authToken || this.apiKey || '').trim();
+          if (this.useAuthorizationForPatch && bearer2) {
+            headers2['Authorization'] = `Bearer ${bearer2}`;
+          }
+          if (this.patchAuthHeaderName && this.patchAuthHeaderValue) {
+            headers2[this.patchAuthHeaderName] = this.patchAuthHeaderValue;
+          }
+          if (this.useCookieTokenForPatch && bearer2) {
+            headers2['Cookie'] = `token=${bearer2}`;
+          }
+          const patchBody2 = {
+            namespaceId: this.namespaceId,
+            name: payload.name,
+            content: payload.content
+          };
+          console.log('✏️ 创建后 PATCH 更新:', patchUrl2);
+          console.log('📤 创建后 PATCH 请求体:', patchBody2);
+          const patchResp2 = await obsidian.requestUrl({
+            url: patchUrl2,
+            method: 'PATCH',
+            headers: headers2,
+            body: JSON.stringify(patchBody2),
+            throw: false
+          });
+          console.log('📥 创建后 PATCH 状态:', patchResp2.status);
+          if (patchResp2.status >= 200 && patchResp2.status < 300) {
+            console.log('✅ 创建后 PATCH 成功:', patchResp2.json);
+            return patchResp2.json;
+          }
+          console.error('❌ 创建后 PATCH 错误响应:', patchResp2.text);
+        }
+        return created;
       }
       console.error('❌ JSON API 错误响应:', jsonResponse.text);
       if (jsonResponse.status === 405 || jsonResponse.status === 404) {
@@ -297,7 +332,36 @@ class OmniboxClient {
           console.log('📥 JSON Fallback 响应状态:', second.status);
           if (second.status >= 200 && second.status < 300) {
             console.log('✅ JSON Fallback 响应成功:', second.json);
-            return second.json;
+            const created2 = second.json || {};
+            if (payload.content && created2.id) {
+              const patchUrl3 = `${this.baseUrl}/api/v1/namespaces/${this.namespaceId}/resources/${created2.id}`;
+              const headers3 = { 'Content-Type': 'application/json' };
+              const bearer3 = String(this.authToken || this.apiKey || '').trim();
+              if (this.useAuthorizationForPatch && bearer3) headers3['Authorization'] = `Bearer ${bearer3}`;
+              if (this.patchAuthHeaderName && this.patchAuthHeaderValue) headers3[this.patchAuthHeaderName] = this.patchAuthHeaderValue;
+              if (this.useCookieTokenForPatch && bearer3) headers3['Cookie'] = `token=${bearer3}`;
+              const patchBody3 = {
+                namespaceId: this.namespaceId,
+                name: payload.name,
+                content: payload.content
+              };
+              console.log('✏️ Fallback 创建后 PATCH 更新:', patchUrl3);
+              console.log('📤 Fallback 创建后 PATCH 请求体:', patchBody3);
+              const patchResp3 = await obsidian.requestUrl({
+                url: patchUrl3,
+                method: 'PATCH',
+                headers: headers3,
+                body: JSON.stringify(patchBody3),
+                throw: false
+              });
+              console.log('📥 Fallback 创建后 PATCH 状态:', patchResp3.status);
+              if (patchResp3.status >= 200 && patchResp3.status < 300) {
+                console.log('✅ Fallback 创建后 PATCH 成功:', patchResp3.json);
+                return patchResp3.json;
+              }
+              console.error('❌ Fallback 创建后 PATCH 错误响应:', patchResp3.text);
+            }
+            return created2;
           }
           console.error('❌ JSON Fallback API 错误响应:', second.text);
         }
